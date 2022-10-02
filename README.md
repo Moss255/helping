@@ -11,14 +11,15 @@ https://opengameart.org/content/lpc-interior-castle-tiles
 ## To Implement
 
 High 
-Replenishing Medication, Clipboards etc.
+Replenishing Medication, Clipboards etc. (From ""nurses"")
 Flesh out game over / Add restart
 
 Medium
 
+Rework font + colour
+
 Low
 Move Player towards Bedside
-Rework Timer font + colour
 
 
 

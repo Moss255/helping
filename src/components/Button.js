@@ -1,26 +1,29 @@
 import { Sprite } from "pixi.js";
 
-export default class Drawer extends Sprite {
-    constructor(x, y, texture, requestId, app) {
+export default class Button extends Sprite {
+    constructor(x, y, texture, app, type) {
         super(texture);
 
         this.x = x;
         this.y = y;
 
-        this.requestId = requestId;
-
         const { stage } = app;
 
         this.stage = stage;
 
+        this.type = type;
+
+   
+        this.interactive = true;
+        this.buttonMode = true;
+        
         this.on('pointerdown', this.onPress)
 
         this.onPress.bind(this);
     }
 
     onPress() {
-        this.stage.emit('replenish', { requestId: this.requestId, count: 5});
+        console.log(this.type);
+        this.stage.emit(this.type, {});
     }
-
-
 }
