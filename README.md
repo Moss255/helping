@@ -11,11 +11,12 @@ https://opengameart.org/content/lpc-interior-castle-tiles
 ## To Implement
 
 High 
-Replenishing Medication, Clipboards etc. (From ""nurses"")
-Flesh out game over / Add restart
+Complete Replenish feature (From ""nurses"")
+Create Refresh Screen
 
 Medium
-
+Create Play button
+Create Restart button
 Rework font + colour
 
 Low
