@@ -1,3 +1,7 @@
+# Helping
+
+Submission for Ludum Dare 51
+
 ## Attributions
 
 https://opengameart.org/content/lpc-wooden-furniture
@@ -8,11 +12,9 @@ https://opengameart.org/content/lpc-interior-castle-tiles
 
 High 
 Replenishing Medication, Clipboards etc.
-Add restart
+Flesh out game over / Add restart
 
 Medium
-Redesign speech bubble (get rid of white)
-
 
 Low
 Move Player towards Bedside

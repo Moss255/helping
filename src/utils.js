@@ -1,3 +1,5 @@
+import { TextStyle } from "pixi.js"
+
 export const requestMap = [
     '',
     'Observation',
@@ -8,7 +10,7 @@ export const requestMap = [
 ]
 
 export const generateRandomInteger = (min, max) => {
-    return Math.floor(min + Math.random()*(max - min + 1))
+    return Math.floor(min + Math.random() * (max - min + 1))
 }
 
 export const generateBedId = () => {
@@ -22,4 +24,10 @@ export const generateRequestId = () => {
 export const generateChange = (overValue = 750) => {
     const value = generateRandomInteger(0, 1000);
     return value > overValue;
+}
+
+export const getFontStyle = () => {
+    return TextStyle({
+        fill: ['#ffffff'],
+    })
 }

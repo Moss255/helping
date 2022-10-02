@@ -1,10 +1,11 @@
 import { Text } from 'pixi.js';
+import { getFontStyle } from '../utils';
 import { generateBedId, generateChange, generateRequestId } from '../utils';
 import { DateTime } from 'luxon';
 
 export default class Timer extends Text {
     constructor(x, y, text, app, initValue = 10, maxValue = 10, minValue = 0, type, visible) {
-        super(text);
+        super(text, getFontStyle);
 
         this.x = x;
         this.y = y;
@@ -12,6 +13,8 @@ export default class Timer extends Text {
         const { ticker, stage } = app;
 
         this.value = initValue;
+
+        this.color
 
         ticker.add((delta) => {
             if (type.includes('add')) {
