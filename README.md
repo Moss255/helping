@@ -16,17 +16,19 @@ Complete Replenish feature (From ""nurses"")
 - Have request above head
 - Click on to replenish
 - Add badges to icons to indicate how many icons we have left
-Create Refresh Screen
+Create Restart Screen
+Deploy!!!
 
 
 Medium
 Create Play button
 Create Restart button
 Rework font + colour
+Convert wav to ogg
 
 Low
 Move Player towards Bedside
-
+Create adaptable layout (Mobile vs Desktop)
 
 
 
