@@ -1,7 +1,25 @@
-import { Texture, SCALE_MODES, Application, settings, Ticker, Text } from 'pixi.js';
+import { Texture, SCALE_MODES, Application, settings, Text, TextStyle } from 'pixi.js';
 import { sound } from '@pixi/sound';
 import { Bed, Icon, Player, Timer, BedRequest, Nurse, Button} from './src/components';
 import './index.css';
+
+const textStyle = new TextStyle({
+  fontFamily: 'Arial',
+  fontSize: 36,
+  fontStyle: 'italic',
+  fontWeight: 'bold',
+  fill: ['#ffffff', '#00ff99'], // gradient
+  stroke: '#4a1850',
+  strokeThickness: 5,
+  dropShadow: true,
+  dropShadowColor: '#000000',
+  dropShadowBlur: 4,
+  dropShadowAngle: Math.PI / 6,
+  dropShadowDistance: 6,
+  wordWrap: true,
+  wordWrapWidth: 440,
+  lineJoin: 'round',
+});
 
 const iconSelectedFiles = ['fill-call.png', 'fill-medication.png', 'fill-feedback.png', 'fill-shower.png'];
 
@@ -45,7 +63,7 @@ const Scenes = {
 
 const start = () => {
 
-  const title = new Text('Helping');
+  const title = new Text('Helping', textStyle);
   title.anchor.set(0.5, 0.5);
   title.x = app.screen.width / 2;
   title.y = 128;
@@ -65,7 +83,7 @@ const start = () => {
 
 const restart = () => {
 
-  const title = new Text('Helping');
+  const title = new Text('Helping', textStyle);
   title.anchor.set(0.5, 0.5);
   title.x = app.screen.width / 2;
   title.y = 128;
@@ -105,9 +123,9 @@ const game = () => {
 
   const requests = {};
 
-  const timer = new Timer(app.screen.width / 2, 0, '', app, 2, 2, 0, 'request', false);
+  const timer = new Timer(app.screen.width / 2, 0, '', app, 2, 2, 0, 'request', false, textStyle);
 
-  const survivalTimer = new Timer(app.screen.width - 70, 0, '', app, 0, 1000, 0, 'add-time', true);
+  const survivalTimer = new Timer(app.screen.width - 70, 0, '', app, 0, 1000, 0, 'add-time', true, textStyle);
 
   let failTimer;
 
@@ -124,7 +142,7 @@ const game = () => {
 
   app.stage.on('request', (e) => {
     if (Object.keys(requests).length > 4 && !failTimer) {
-      failTimer = new Timer(app.screen.width / 2, app.screen.height / 2, '5', app, 5, 5, 0, 'fail', true)
+      failTimer = new Timer(app.screen.width / 2, app.screen.height / 2, '5', app, 5, 5, 0, 'fail', true, textStyle)
       app.stage.addChild(failTimer);
     }
 
