@@ -13,6 +13,8 @@ export default class Button extends Sprite {
 
         this.type = type;
 
+        this.anchor.set(0.5);
+
    
         this.interactive = true;
         this.buttonMode = true;
