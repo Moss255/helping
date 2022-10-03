@@ -1,7 +1,6 @@
 import { Texture, SCALE_MODES, Application, settings, Text, TextStyle, Sprite } from 'pixi.js';
 import { sound } from '@pixi/sound';
 import { Bed, Icon, Player, Timer, BedRequest, Nurse, Button, Badge, Counter} from './src/components';
-import './index.css';
 import { generateChange, generateRandomInteger } from './src/utils';
 
 const titleStyle = new TextStyle({
