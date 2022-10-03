@@ -176,9 +176,6 @@ const tutorial = () => {
 }
 
 const start = () => {
-
-  sound.stopAll();
-
   sound.play('bg', {loop: true, volume: 0.05});
 
   const title = new Text('Helping', titleStyle);
@@ -238,9 +235,6 @@ const restart = () => {
 
 
 const game = () => {
-
-  console.log('game');
-  sound.stopAll();
 
   app.ticker.start();
 
