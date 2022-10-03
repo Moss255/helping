@@ -41,7 +41,7 @@ const textStyle = new TextStyle({
 let playerTextures = [];
 
 for (let i = 0; i <= 7; i++) {
-  playerTextures.push(Texture.from(`blackberry/region_${i}.png`));
+  playerTextures.push(Texture.from(`assets/blackberry/region_${i}.png`));
 }
 
 const nursesTextures = {
@@ -51,17 +51,17 @@ const nursesTextures = {
 }
 
 
-sound.add('done', 'done.ogg');
-sound.add('bg', 'bg.ogg');
-sound.add('explode', 'explode.ogg');
+sound.add('done', 'assets/done.ogg');
+sound.add('bg', 'assets/bg.ogg');
+sound.add('explode', 'assets/explode.ogg');
 
 
-const badgeTexture = Texture.from('badge.png');
+const badgeTexture = Texture.from('assets/badge.png');
 
 for (let i = 0; i <= 7; i++) {
-  nursesTextures[0].push(Texture.from(`blackberry/region_${i}.png`));
-  nursesTextures[1].push(Texture.from(`strawberry/region_${i}.png`));
-  nursesTextures[2].push(Texture.from(`banana/region_${i}.png`));
+  nursesTextures[0].push(Texture.from(`assets/blackberry/region_${i}.png`));
+  nursesTextures[1].push(Texture.from(`assets/strawberry/region_${i}.png`));
+  nursesTextures[2].push(Texture.from(`assets/banana/region_${i}.png`));
 }
 
 const iconSelectedFiles = ['fill-call.png', 'fill-medication.png', 'fill-feedback.png', 'fill-shower.png'];
@@ -73,13 +73,13 @@ export const iconSelectedTextures = iconSelectedFiles.map(icon => {
 const iconFiles = ['call.png', 'medication.png', 'feedback.png', 'shower.png'];
 
 export const iconTextures = iconFiles.map(icon => {
-  return Texture.from(icon);
+  return Texture.from(`assets/${icon}`);
 });
 
 const requestFiles = ['request-call.png', 'request-medication.png', 'request-feedback.png', 'request-shower.png']
 
 export const requestTextures = requestFiles.map(request => {
-  return Texture.from(request);
+  return Texture.from(`assets/${request}`);
 });
 
 let appWidth = 360;
@@ -123,7 +123,7 @@ const Scenes = {
 
 const tutorial = () => {
   const slideTextures = [0, 1, 2, 3].map(value => {
-    return Texture.from(`tutorial/slide_${value}.png`);
+    return Texture.from(`assets/tutorial/slide_${value}.png`);
   });
 
   let tutCount = 0;
@@ -157,7 +157,7 @@ const tutorial = () => {
     tutorialText.text = tutorialTips[tutCount];
 
     if (tutCount > 3) {
-      const startTexture = Texture.from('start.png');
+      const startTexture = Texture.from('assets/start.png');
 
       const startButton = new Button(app.screen.width / 2, app.screen.height - 32, startTexture, app, 'play');
       app.stage.addChild(startButton);
@@ -176,6 +176,8 @@ const tutorial = () => {
 
 const start = () => {
 
+  document.body.style.backgroundImage = Floor;
+
   sound.stopAll();
 
   sound.play('bg', {loop: true, volume: 0.05});
@@ -187,8 +189,8 @@ const start = () => {
   title.y = 128;
   app.stage.addChild(title);
 
-  const startTexture = Texture.from('start.png');
-  const tutorialTexture = Texture.from('tutorial.png');
+  const startTexture = Texture.from('assets/start.png');
+  const tutorialTexture = Texture.from('assets/tutorial.png');
 
   const startButton = new Button(app.screen.width / 2, 400, startTexture, app, 'play');
   app.stage.addChild(startButton);
@@ -223,7 +225,7 @@ const restart = () => {
   score.y = app.screen.height / 2;
   app.stage.addChild(score);
 
-  const restartTexture = Texture.from('restart.png')
+  const restartTexture = Texture.from('assets/restart.png')
   
   const restartButton = new Button(app.screen.width / 2, app.screen.height - 32, restartTexture, app, 'restart');
   app.stage.addChild(restartButton);
@@ -243,7 +245,7 @@ const game = () => {
 
   app.ticker.start();
 
-  const bedTexture = Texture.from('bed.png');
+  const bedTexture = Texture.from('assets/bed.png');
 
   const player = new Player(0, 0, playerTextures);
 
@@ -282,7 +284,6 @@ const game = () => {
   }
 
   app.stage.on('request', (e) => {
-    console.log('request');
     if (Object.keys(requests).length > 4 && !failTimer) {
       failTimer = new Timer(app.screen.width / 2, app.screen.height / 2, '5', app, 5, 5, 0, 'fail', true, titleStyle)
       app.stage.addChild(failTimer);
