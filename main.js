@@ -2,6 +2,7 @@ import { Texture, SCALE_MODES, Application, settings, Text, TextStyle, Sprite } 
 import { sound } from '@pixi/sound';
 import { Bed, Icon, Player, Timer, BedRequest, Nurse, Button, Badge, Counter} from './src/components';
 import { generateChange, generateRandomInteger } from './src/utils';
+import './index.css';
 
 const titleStyle = new TextStyle({
   fontFamily: 'Roboto',
@@ -67,7 +68,7 @@ for (let i = 0; i <= 7; i++) {
 const iconSelectedFiles = ['fill-call.png', 'fill-medication.png', 'fill-feedback.png', 'fill-shower.png'];
 
 export const iconSelectedTextures = iconSelectedFiles.map(icon => {
-  return Texture.from(icon);
+  return Texture.from(`assets/${icon}`);
 });
 
 const iconFiles = ['call.png', 'medication.png', 'feedback.png', 'shower.png'];
@@ -175,8 +176,6 @@ const tutorial = () => {
 }
 
 const start = () => {
-
-  document.body.style.backgroundImage = Floor;
 
   sound.stopAll();
 
