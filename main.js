@@ -310,7 +310,7 @@ const game = () => {
     // Ever 6 seconds
     if (Math.ceil(nurseTime) % 6 === 0) {
       if (nurses.length <= 0 && generateChange(750)) {
-        const left = false
+        const left = generateChange(500);
         let nurse = null
         if (left) {
           nurse = new Nurse(-25, 192, nursesTextures[generateRandomInteger(0, 2)], 'left', app);
