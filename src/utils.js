@@ -25,9 +25,3 @@ export const generateChange = (overValue = 750) => {
     const value = generateRandomInteger(0, 1000);
     return value > overValue;
 }
-
-export const getFontStyle = () => {
-    return TextStyle({
-        fill: ['#ffffff'],
-    })
-}

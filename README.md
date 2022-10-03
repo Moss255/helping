@@ -1,6 +1,6 @@
 # Helping
 
-Submission for Ludum Dare 51
+Submission for Ludum Dare 51 Compo
 
 ## Attributions
 
@@ -8,25 +8,29 @@ https://opengameart.org/content/lpc-wooden-furniture
 https://opengameart.org/content/fruit-salad-space-catch-reborn
 https://opengameart.org/content/lpc-interior-castle-tiles
 
+## Tools used
+
+Visual Studio Code
+GIMP
+Inkscape
+Atlasta
+FFMPEG
+jfxr
+
 ## To Implement
 
 High 
-Completely Replenish feature (From ""nurses"")
-- Zoom across screen
-- Have request above head
-- Click on to replenish
-- Add badges to icons to indicate how many icons we have left
-Create Restart Screen
-Deploy!!!
+Complete Replenish feature (From ""nurses"")
+- Add badges to icons to indicate how many items we have left
+Deploy!!! - GitHub Pages or itch.io
 
 
 Medium
 Rework font + colour
-Convert wav to ogg
+Convert wav to ogg - FFMPEG
 Create Tutorial
 
 Low
-Move Player towards Bedside
 Create adaptable layout (Mobile vs Desktop)
 
 

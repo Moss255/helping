@@ -1,11 +1,10 @@
 import { Text } from 'pixi.js';
-import { getFontStyle } from '../utils';
 import { generateBedId, generateChange, generateRequestId } from '../utils';
 import { DateTime } from 'luxon';
 
 export default class Timer extends Text {
-    constructor(x, y, text, app, initValue = 10, maxValue = 10, minValue = 0, type, visible) {
-        super(text, getFontStyle);
+    constructor(x, y, text, app, initValue = 10, maxValue = 10, minValue = 0, type, visible, style) {
+        super(text, style);
 
         this.x = x;
         this.y = y;

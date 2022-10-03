@@ -1,7 +1,39 @@
-import { Texture, SCALE_MODES, Application, settings, Ticker, Text } from 'pixi.js';
+import { Texture, SCALE_MODES, Application, settings, Text, TextStyle } from 'pixi.js';
 import { sound } from '@pixi/sound';
 import { Bed, Icon, Player, Timer, BedRequest, Nurse, Button} from './src/components';
 import './index.css';
+import { generateRandomInteger } from './src/utils';
+
+const textStyle = new TextStyle({
+  fontFamily: 'Arial',
+  fontSize: 36,
+  fontStyle: 'italic',
+  fontWeight: 'bold',
+  fill: ['#ffffff', '#00ff99'], // gradient
+  stroke: '#4a1850',
+  strokeThickness: 5,
+  wordWrap: true,
+  wordWrapWidth: 440,
+  lineJoin: 'round',
+});
+
+let playerTextures = [];
+
+for (let i = 0; i <= 7; i++) {
+  playerTextures.push(Texture.from(`blackberry/region_${i}.png`));
+}
+
+const nursesTextures = {
+  0: [],
+  1: [],
+  2: []
+}
+
+for (let i = 0; i <= 7; i++) {
+  nursesTextures[0].push(Texture.from(`blackberry/region_${i}.png`));
+  nursesTextures[1].push(Texture.from(`strawberry/region_${i}.png`));
+  nursesTextures[2].push(Texture.from(`banana/region_${i}.png`));
+}
 
 const iconSelectedFiles = ['fill-call.png', 'fill-medication.png', 'fill-feedback.png', 'fill-shower.png'];
 
@@ -15,6 +47,11 @@ export const iconTextures = iconFiles.map(icon => {
   return Texture.from(icon);
 });
 
+const requestFiles = ['request-call.png', 'request-medication.png', 'request-feedback.png', 'request-shower.png']
+
+export const requestTextures = requestFiles.map(request => {
+  return Texture.from(request);
+});
 
 const app = new Application({ backgroundAlpha: 0, width: window.innerWidth, height: window.innerHeight - 10 });
 document.body.appendChild(app.view);
@@ -42,7 +79,6 @@ const start = () => {
 
   const startTexture = Texture.from('start.png');
 
-  const title = new Text('Helping');
   title.anchor.set(0.5, 0.5);
   title.x = app.screen.width / 2;
   title.y = 128;
@@ -62,8 +98,6 @@ const start = () => {
 const restart = () => {
 
   const restartTexture = Texture.from('restart.png')
-
-  const title = new Text('Helping');
   title.anchor.set(0.5, 0.5);
   title.x = app.screen.width / 2;
   title.y = 128;
@@ -84,30 +118,22 @@ const game = () => {
 
   sound.add('done', 'done.wav');
 
-  let playerTextures = [];
-
-  for (let i = 0; i <= 7; i++) {
-    playerTextures.push(Texture.from(`blackberry/region_${i}.png`));
-  }
+  
 
   const player = new Player(0, 0, playerTextures);
 
   app.stage.addChild(player);
 
-  const requestFiles = ['request-call.png', 'request-medication.png', 'request-feedback.png', 'request-shower.png']
 
-  const requestTextures = requestFiles.map(request => {
-    return Texture.from(request);
-  });
 
   const beds = [];
   const icons = [];
 
   const requests = {};
 
-  const timer = new Timer(app.screen.width / 2, 0, '', app, 2, 2, 0, 'request', false);
+  const timer = new Timer(app.screen.width / 2, 0, '', app, 2, 2, 0, 'request', false, textStyle);
 
-  const survivalTimer = new Timer(app.screen.width - 70, 0, '', app, 0, 1000, 0, 'add-time', true);
+  const survivalTimer = new Timer(app.screen.width - 70, 0, '', app, 0, 1000, 0, 'add-time', true, textStyle);
 
   let failTimer;
 
@@ -124,7 +150,7 @@ const game = () => {
 
   app.stage.on('request', (e) => {
     if (Object.keys(requests).length > 4 && !failTimer) {
-      failTimer = new Timer(app.screen.width / 2, app.screen.height / 2, '5', app, 5, 5, 0, 'fail', true)
+      failTimer = new Timer(app.screen.width / 2, app.screen.height / 2, '5', app, 5, 5, 0, 'fail', true, textStyle)
       app.stage.addChild(failTimer);
     }
 
@@ -133,6 +159,7 @@ const game = () => {
     if (requests[bedId]) {
       return;
     }
+
     beds[bedId].request = requestId;
     const request = new BedRequest(x + 40, y, requestTextures[requestId], bedId);
     requests[bedId] = request;
@@ -154,7 +181,7 @@ const game = () => {
     // Ever 6 seconds
     if (Math.ceil(nurseTime) % 6 === 0) {
       if (nurses.length <= 0) {
-        const nurse = new Nurse(-25, 150, playerTextures, 'left', app);
+        const nurse = new Nurse(-25, 150, nursesTextures[generateRandomInteger(0, 2)], 'left', app);
         nurses.push(nurse);
         app.stage.addChild(nurse);
       }
@@ -166,6 +193,12 @@ const game = () => {
     const { nurse } = e;
     nurses = nurses.filter(curNurse => !curNurse.destroyed);
     app.stage.removeChild(nurse);
+  });
+
+  app.stage.on('replenish', (e) => {
+    const { requestId } = e;
+    player.options[requestId] += 5;
+    console.log(player.options);
   })
 
   app.stage.on('requestComplete', (e) => {
