@@ -221,9 +221,9 @@ const restart = () => {
   score.y = app.screen.height / 2;
   app.stage.addChild(score);
 
-  const restartTexture = Texture.from('assets/restart.png')
+  const restartTexture = Texture.from('assets/restart.png');
   
-  const restartButton = new Button(app.screen.width / 2, app.screen.height + 32, restartTexture, app, 'restart');
+  const restartButton = new Button(app.screen.width / 2, 300, restartTexture, app, 'restart');
   app.stage.addChild(restartButton);
 
   app.stage.on('restart', (e) => {
