@@ -13,6 +13,8 @@ export default class Timer extends Text {
 
         this.value = initValue;
 
+        this.minValue = minValue;
+
         this.color
 
         ticker.add((delta) => {
@@ -55,8 +57,6 @@ export default class Timer extends Text {
     }
 
     gameOver(stage) {
-        if (this.value <= minValue) {
-            stage.emit('gameover');
-        }
+        stage.emit('gameover');
     }
 }

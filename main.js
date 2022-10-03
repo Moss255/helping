@@ -83,8 +83,8 @@ export const requestTextures = requestFiles.map(request => {
   return Texture.from(request);
 });
 
-let appWidth = 800;
-let appHeight = 600;
+let appWidth = 360;
+let appHeight = 800;
 
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 if (isMobile) {
@@ -99,8 +99,6 @@ settings.SCALE_MODE = SCALE_MODES.NEAREST;
 
 const app = new Application({ backgroundAlpha: 0, width: appWidth, height: appHeight - 10 });
 document.body.appendChild(app.view);
-
-
 
 
 const survivalTimer = new Timer(app.screen.width - 110, 0, '', app, 0, 1000, 0, 'add-time', true, titleStyle);
