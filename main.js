@@ -26,13 +26,13 @@ const Scenes = {
   updateScene(scene) {
     switch (scene) {
       case 'start':
-        start()
+        start();
         break;
       case 'game':
         game();
         break;
       case 'restart':
-        restart()
+        restart();
         break;
     }
   }
@@ -40,40 +40,41 @@ const Scenes = {
 
 const start = () => {
 
+  const startTexture = Texture.from('start.png');
+
   const title = new Text('Helping');
   title.anchor.set(0.5, 0.5);
   title.x = app.screen.width / 2;
   title.y = 128;
   app.stage.addChild(title);
 
-  const button = new Button(100, 100, iconTextures[0], app, 'play');
+  const button = new Button(app.screen.width / 2, 400, startTexture, app, 'play');
   app.stage.addChild(button);
 
   app.stage.on('play', (e) => {
     console.log('play');
+    app.stage.removeChildren();
     Scenes.updateScene('game');
-    app.stage.removeChild(button);
-    app.stage.removeChild(title);
   });
 }
 
 
 const restart = () => {
 
+  const restartTexture = Texture.from('restart.png')
+
   const title = new Text('Helping');
   title.anchor.set(0.5, 0.5);
   title.x = app.screen.width / 2;
   title.y = 128;
   app.stage.addChild(title);
 
-  const button = new Button(100, 100, iconTextures[0], app, 'play');
+  const button = new Button(app.screen.width / 2, 400, restartTexture, app, 'restart');
   app.stage.addChild(button);
 
-  app.stage.on('play', (e) => {
-    console.log('play');
-    Scenes.updateScene('start');
-    app.stage.removeChild(button);
-    app.stage.removeChild(title);
+  app.stage.on('restart', (e) => {
+    app.stage.removeChildren();
+    Scenes.updateScene('game');
   });
 }
 
@@ -138,6 +139,11 @@ const game = () => {
     app.stage.addChild(request)
   });
 
+  app.stage.on('gameover', (e) => {
+    app.stage.removeChildren();
+    Scenes.updateScene('restart');
+  });
+
   let nurseTime = 0;
 
   let nurses = [];
@@ -199,4 +205,4 @@ const game = () => {
 
 }
 
-start();
+Scenes.updateScene('start');

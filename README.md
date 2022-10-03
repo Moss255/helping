@@ -21,10 +21,9 @@ Deploy!!!
 
 
 Medium
-Create Play button
-Create Restart button
 Rework font + colour
 Convert wav to ogg
+Create Tutorial
 
 Low
 Move Player towards Bedside
