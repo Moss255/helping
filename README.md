@@ -11,7 +11,7 @@ https://opengameart.org/content/lpc-interior-castle-tiles
 ## To Implement
 
 High 
-Complete Replenish feature (From ""nurses"")
+Completely Replenish feature (From ""nurses"")
 - Zoom across screen
 - Have request above head
 - Click on to replenish
