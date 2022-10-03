@@ -15,5 +15,7 @@ export default class Player extends AnimatedSprite {
 
         this.animationSpeed = 0.1;
         this.play();
+
+        this.visible = false;
     }
 }

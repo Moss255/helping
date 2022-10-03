@@ -2,6 +2,7 @@ import { Texture, SCALE_MODES, Application, settings, Text, TextStyle } from 'pi
 import { sound } from '@pixi/sound';
 import { Bed, Icon, Player, Timer, BedRequest, Nurse, Button} from './src/components';
 import './index.css';
+import { generateRandomInteger } from './src/utils';
 
 const textStyle = new TextStyle({
   fontFamily: 'Arial',
@@ -11,15 +12,28 @@ const textStyle = new TextStyle({
   fill: ['#ffffff', '#00ff99'], // gradient
   stroke: '#4a1850',
   strokeThickness: 5,
-  dropShadow: true,
-  dropShadowColor: '#000000',
-  dropShadowBlur: 4,
-  dropShadowAngle: Math.PI / 6,
-  dropShadowDistance: 6,
   wordWrap: true,
   wordWrapWidth: 440,
   lineJoin: 'round',
 });
+
+let playerTextures = [];
+
+for (let i = 0; i <= 7; i++) {
+  playerTextures.push(Texture.from(`blackberry/region_${i}.png`));
+}
+
+const nursesTextures = {
+  0: [],
+  1: [],
+  2: []
+}
+
+for (let i = 0; i <= 7; i++) {
+  nursesTextures[0].push(Texture.from(`blackberry/region_${i}.png`));
+  nursesTextures[1].push(Texture.from(`strawberry/region_${i}.png`));
+  nursesTextures[2].push(Texture.from(`banana/region_${i}.png`));
+}
 
 const iconSelectedFiles = ['fill-call.png', 'fill-medication.png', 'fill-feedback.png', 'fill-shower.png'];
 
@@ -55,7 +69,7 @@ const Scenes = {
         game();
         break;
       case 'restart':
-        restart()
+        restart();
         break;
     }
   }
@@ -106,11 +120,7 @@ const game = () => {
 
   sound.add('done', 'done.wav');
 
-  let playerTextures = [];
-
-  for (let i = 0; i <= 7; i++) {
-    playerTextures.push(Texture.from(`blackberry/region_${i}.png`));
-  }
+  
 
   const player = new Player(0, 0, playerTextures);
 
@@ -168,7 +178,7 @@ const game = () => {
     // Ever 6 seconds
     if (Math.ceil(nurseTime) % 6 === 0) {
       if (nurses.length <= 0) {
-        const nurse = new Nurse(-25, 150, playerTextures, 'left', app);
+        const nurse = new Nurse(-25, 150, nursesTextures[generateRandomInteger(0, 2)], 'left', app);
         nurses.push(nurse);
         app.stage.addChild(nurse);
       }

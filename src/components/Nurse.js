@@ -44,7 +44,7 @@ export default class Nurse extends AnimatedSprite {
             this.bedRequest.x = this.x + 10;
             this.bedRequest.y = this.y - 50;
 
-            if (lifeTime >= 1 && !this.destroyed) {
+            if (lifeTime >= 4 && !this.destroyed) {
                 this.destroy();
                 stage.removeChild(this.bedRequest);
                 stage.emit('nurseEnd', { nurse: this });
