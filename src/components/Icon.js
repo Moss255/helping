@@ -11,6 +11,8 @@ export default class Icon extends Sprite {
         this.x = x;
         this.y = y;
 
+        this.anchor.set(0.5);
+
         const { stage } = app;
 
         this.stage = stage;

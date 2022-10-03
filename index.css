@@ -2,4 +2,7 @@ body {
     margin: 0;
     background-color: #1099bb;
     background-image: url('floor.png');
+    display: grid;
+    align-content: center;
+    justify-content: center;
 }

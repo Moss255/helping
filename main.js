@@ -1,17 +1,39 @@
-import { Texture, SCALE_MODES, Application, settings, Text, TextStyle } from 'pixi.js';
+import { Texture, SCALE_MODES, Application, settings, Text, TextStyle, Sprite } from 'pixi.js';
 import { sound } from '@pixi/sound';
-import { Bed, Icon, Player, Timer, BedRequest, Nurse, Button} from './src/components';
+import { Bed, Icon, Player, Timer, BedRequest, Nurse, Button, Badge, Counter} from './src/components';
 import './index.css';
-import { generateRandomInteger } from './src/utils';
+import { generateChange, generateRandomInteger } from './src/utils';
+
+const titleStyle = new TextStyle({
+  fontFamily: 'Roboto',
+  fontSize: 36,
+  fontWeight: 'bold',
+  fill: ['#1099bb'],
+  stroke: '#fff',
+  strokeThickness: 5,
+  wordWrap: true,
+  wordWrapWidth: 440,
+  lineJoin: 'round',
+});
+
+const badgeStyle = new TextStyle({
+  fontFamily: 'Roboto',
+  fontSize: 32,
+  fill: ['#1099bb'],
+/*   stroke: '#fff',
+  strokeThickness: 5, */
+  wordWrap: true,
+  wordWrapWidth: 440,
+  lineJoin: 'round',
+});
 
 const textStyle = new TextStyle({
-  fontFamily: 'Arial',
-  fontSize: 36,
-  fontStyle: 'italic',
+  fontFamily: 'Roboto',
+  fontSize: 24,
   fontWeight: 'bold',
-  fill: ['#ffffff', '#00ff99'], // gradient
-  stroke: '#4a1850',
-  strokeThickness: 5,
+  fill: ['#fff'],
+  stroke: '#fff',
+  strokeThickness: 0,
   wordWrap: true,
   wordWrapWidth: 440,
   lineJoin: 'round',
@@ -28,6 +50,14 @@ const nursesTextures = {
   1: [],
   2: []
 }
+
+
+sound.add('done', 'done.ogg');
+sound.add('bg', 'bg.ogg');
+sound.add('explode', 'explode.ogg');
+
+
+const badgeTexture = Texture.from('badge.png');
 
 for (let i = 0; i <= 7; i++) {
   nursesTextures[0].push(Texture.from(`blackberry/region_${i}.png`));
@@ -53,17 +83,36 @@ export const requestTextures = requestFiles.map(request => {
   return Texture.from(request);
 });
 
-const app = new Application({ backgroundAlpha: 0, width: window.innerWidth, height: window.innerHeight - 10 });
-document.body.appendChild(app.view);
+let appWidth = 800;
+let appHeight = 600;
+
+var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+if (isMobile) {
+  appWidth = window.innerWidth;
+  appHeight = window.innerHeight;
+}
+
+settings.RESOLUTION = 1;
 
 // Scale mode for all textures, will retain pixelation
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
+
+const app = new Application({ backgroundAlpha: 0, width: appWidth, height: appHeight - 10 });
+document.body.appendChild(app.view);
+
+
+
+
+const survivalTimer = new Timer(app.screen.width - 110, 0, '', app, 0, 1000, 0, 'add-time', true, titleStyle);
 
 const Scenes = {
   updateScene(scene) {
     switch (scene) {
       case 'start':
         start();
+        break;
+      case 'tutorial':
+        tutorial();
         break;
       case 'game':
         game();
@@ -75,38 +124,115 @@ const Scenes = {
   }
 }
 
-const start = () => {
+const tutorial = () => {
+  const slideTextures = [0, 1, 2, 3].map(value => {
+    return Texture.from(`tutorial/slide_${value}.png`);
+  });
 
-  const startTexture = Texture.from('start.png');
+  let tutCount = 0;
 
-  title.anchor.set(0.5, 0.5);
-  title.x = app.screen.width / 2;
-  title.y = 128;
-  app.stage.addChild(title);
+  const tutorialTips = ['Tap the icon to select an item', 'Tap on the bed to fulfill the request', 'Tap the managers for some assistance (they come rarely)', 'How long can you survive? Watch the timer.', 'Any questions? Warning! You will not enough resources at some points!'];
 
-  const button = new Button(app.screen.width / 2, 400, startTexture, app, 'play');
-  app.stage.addChild(button);
+  textStyle.wordWrapWidth = app.screen.width - 32;
+
+  const tutorialText = new Text(tutorialTips[tutCount], textStyle);
+
+  tutorialText.x = 0;
+  tutorialText.y = 0;
+
+  app.stage.addChild(tutorialText);
+
+  const frame = new Sprite(slideTextures[tutCount]);
+
+  frame.interactive = true;
+  frame.buttonMode = true;
+
+  frame.anchor.set(0.5);
+
+  frame.scale.set(0.25);
+
+  frame.x = app.screen.width / 2;
+  frame.y = app.screen.height / 2;
+
+  frame.on('pointerdown', () => {
+    tutCount += 1;
+    frame.texture = slideTextures[tutCount];
+    tutorialText.text = tutorialTips[tutCount];
+
+    if (tutCount > 3) {
+      const startTexture = Texture.from('start.png');
+
+      const startButton = new Button(app.screen.width / 2, app.screen.height - 32, startTexture, app, 'play');
+      app.stage.addChild(startButton);
+    }
+  });
+
+  app.stage.addChild(frame);
+
 
   app.stage.on('play', (e) => {
-    console.log('play');
     app.stage.removeChildren();
-    Scenes.updateScene('game');
+    app.stage.removeAllListeners();
+    Scenes.updateScene('start');
   });
 }
 
+const start = () => {
 
-const restart = () => {
+  sound.stopAll();
 
-  const restartTexture = Texture.from('restart.png')
+  sound.play('bg', {loop: true, volume: 0.05});
+
+  const title = new Text('Helping', titleStyle);
+
   title.anchor.set(0.5, 0.5);
   title.x = app.screen.width / 2;
   title.y = 128;
   app.stage.addChild(title);
 
-  const button = new Button(app.screen.width / 2, 400, restartTexture, app, 'restart');
-  app.stage.addChild(button);
+  const startTexture = Texture.from('start.png');
+  const tutorialTexture = Texture.from('tutorial.png');
+
+  const startButton = new Button(app.screen.width / 2, 400, startTexture, app, 'play');
+  app.stage.addChild(startButton);
+
+  const tutorialButton = new Button(app.screen.width / 2, 500, tutorialTexture, app, 'tutorial');
+  app.stage.addChild(tutorialButton);
+
+  app.stage.on('play', (e) => {
+    app.stage.removeChildren();
+    app.stage.removeAllListeners();
+    Scenes.updateScene('game');
+});
+
+app.stage.on('tutorial', (e) => {
+  app.stage.removeChildren();
+  app.stage.removeAllListeners();
+  Scenes.updateScene('tutorial');
+})
+}
+
+const restart = () => {
+
+  const title = new Text('Helping', titleStyle);
+  title.anchor.set(0.5, 0.5);
+  title.x = app.screen.width / 2;
+  title.y = 128;
+  app.stage.addChild(title);
+
+  const score = new Text(`You survived ${survivalTimer.text}`, titleStyle);
+  score.anchor.set(0.5);
+  score.x = app.screen.width / 2;
+  score.y = app.screen.height / 2;
+  app.stage.addChild(score);
+
+  const restartTexture = Texture.from('restart.png')
+  
+  const restartButton = new Button(app.screen.width / 2, app.screen.height - 32, restartTexture, app, 'restart');
+  app.stage.addChild(restartButton);
 
   app.stage.on('restart', (e) => {
+    app.stage.removeAllListeners();
     app.stage.removeChildren();
     Scenes.updateScene('game');
   });
@@ -114,11 +240,13 @@ const restart = () => {
 
 
 const game = () => {
+
+  console.log('game');
+  sound.stopAll();
+
+  app.ticker.start();
+
   const bedTexture = Texture.from('bed.png');
-
-  sound.add('done', 'done.wav');
-
-  
 
   const player = new Player(0, 0, playerTextures);
 
@@ -129,28 +257,37 @@ const game = () => {
   const beds = [];
   const icons = [];
 
+  const badges = [];
+  const badgesText = [];
+
   const requests = {};
 
-  const timer = new Timer(app.screen.width / 2, 0, '', app, 2, 2, 0, 'request', false, textStyle);
+  const timer = new Timer(app.screen.width / 2, 0, '', app, 2, 2, 0, 'request', false, titleStyle);
 
-  const survivalTimer = new Timer(app.screen.width - 70, 0, '', app, 0, 1000, 0, 'add-time', true, textStyle);
+  const survivalTimer = new Timer(app.screen.width - 110, 0, '', app, 0, 1000, 0, 'add-time', true, titleStyle);
 
   let failTimer;
 
-  for (let i = 0; i <= 4; i++) {
-    const icon = new Icon(70 * i + 40, app.screen.height - 70, iconTextures[i], i, player, app);
+  for (let i = 0; i <= 3; i++) {
+    const icon = new Icon(80 * i + (app.screen.width / 2) - 135, app.screen.height - 32, iconTextures[i], i, player, app);
+    const badge = new Badge(icon.x + 32, icon.y - 16, badgeTexture);
+    const badgeText = new Counter(badge.x, badge.y, '0', badgeStyle);
+    badgeText.addValue(player.options[i]);
+    badgesText.push(badgeText);
+    badges.push(badge);
     icons.push(icon);
   }
 
   for (let i = 0; i < 6; i++) {
     const x = i >= 3 ? i - 3 : i
-    const bed = new Bed((app.screen.width / 3 * x) + 30, i >= 3 ? (app.screen.height / 2) + 64 : 32, bedTexture, player, app, i);
+    const bed = new Bed((app.screen.width / 3 * x) + 30, i >= 3 ? (app.screen.height / 2) + 64 : 48, bedTexture, player, app, i);
     beds.push(bed);
   }
 
   app.stage.on('request', (e) => {
+    console.log('request');
     if (Object.keys(requests).length > 4 && !failTimer) {
-      failTimer = new Timer(app.screen.width / 2, app.screen.height / 2, '5', app, 5, 5, 0, 'fail', true, textStyle)
+      failTimer = new Timer(app.screen.width / 2, app.screen.height / 2, '5', app, 5, 5, 0, 'fail', true, titleStyle)
       app.stage.addChild(failTimer);
     }
 
@@ -168,6 +305,7 @@ const game = () => {
 
   app.stage.on('gameover', (e) => {
     app.stage.removeChildren();
+    app.ticker.stop();
     Scenes.updateScene('restart');
   });
 
@@ -180,12 +318,18 @@ const game = () => {
 
     // Ever 6 seconds
     if (Math.ceil(nurseTime) % 6 === 0) {
-      if (nurses.length <= 0) {
-        const nurse = new Nurse(-25, 150, nursesTextures[generateRandomInteger(0, 2)], 'left', app);
-        nurses.push(nurse);
+      if (nurses.length <= 0 && generateChange(750)) {
+        const left = false
+        let nurse = null
+        if (left) {
+          nurse = new Nurse(-25, 192, nursesTextures[generateRandomInteger(0, 2)], 'left', app);
+        } else {
+          nurse = new Nurse(app.screen.width + 32, (app.screen.height / 2) + 32, nursesTextures[generateRandomInteger(0, 2)], 'right', app);
+        }
+
+        nurses.push(nurse)
         app.stage.addChild(nurse);
       }
-
     }
   });
 
@@ -196,20 +340,22 @@ const game = () => {
   });
 
   app.stage.on('replenish', (e) => {
+    sound.play('explode');
     const { requestId } = e;
-    player.options[requestId] += 5;
-    console.log(player.options);
+    player.options[requestId] += 2;
+    badgesText[requestId].setValue(player.options[requestId]);
   })
 
   app.stage.on('requestComplete', (e) => {
+    const { requestId, bedId } = e;
     if (Object.keys(requests).length <= 4 && failTimer) {
       app.stage.removeChild(failTimer);
       failTimer.value = 5;
       failTimer = null;
-      sound.stop('done');
+      
     }
 
-    const { bedId } = e;
+    badgesText[requestId].setValue(player.options[requestId]);
     app.stage.removeChild(requests[bedId]);
     delete requests[bedId]
   });
@@ -234,6 +380,14 @@ const game = () => {
   icons.forEach(icon => {
     app.stage.addChild(icon);
   });
+
+  badges.forEach(badge => {
+    app.stage.addChild(badge);
+  });
+
+  badgesText.forEach(text => {
+    app.stage.addChild(text);
+  })
 
 
 }

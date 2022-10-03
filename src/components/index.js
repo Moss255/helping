@@ -5,6 +5,8 @@ import Player from "./Player";
 import Timer from "./Timer";
 import Button from "./Button";
 import Nurse from "./Nurse";
+import Badge from "./Badge";
+import Counter from "./Counter";
 
 export {
     Bed,
@@ -13,5 +15,7 @@ export {
     Player,
     Timer,
     Button,
-    Nurse
+    Nurse,
+    Badge,
+    Counter
 }

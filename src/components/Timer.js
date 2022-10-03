@@ -55,6 +55,8 @@ export default class Timer extends Text {
     }
 
     gameOver(stage) {
-        stage.emit('gameover');
+        if (this.value <= minValue) {
+            stage.emit('gameover');
+        }
     }
 }

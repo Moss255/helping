@@ -7,6 +7,10 @@ Submission for Ludum Dare 51 Compo
 https://opengameart.org/content/lpc-wooden-furniture
 https://opengameart.org/content/fruit-salad-space-catch-reborn
 https://opengameart.org/content/lpc-interior-castle-tiles
+https://fonts.google.com/
+https://fonts.google.com/icons
+#https://www.youtube.com/watch?v=m_xf-5ViDuU
+https://jfxr.frozenfractal.com/#
 
 ## Tools used
 
@@ -20,18 +24,13 @@ jfxr
 ## To Implement
 
 High 
-Complete Replenish feature (From ""nurses"")
-- Add badges to icons to indicate how many items we have left
 Deploy!!! - GitHub Pages or itch.io
-
+Recenter everything
 
 Medium
-Rework font + colour
-Convert wav to ogg - FFMPEG
-Create Tutorial
 
 Low
-Create adaptable layout (Mobile vs Desktop)
+
 
 
 
