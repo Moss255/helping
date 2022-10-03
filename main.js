@@ -229,7 +229,7 @@ const restart = () => {
   app.stage.on('restart', (e) => {
     app.stage.removeAllListeners();
     app.stage.removeChildren();
-    Scenes.updateScene('game');
+    Scenes.updateScene('start');
   });
 }
 
