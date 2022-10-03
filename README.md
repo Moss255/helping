@@ -28,6 +28,7 @@ Deploy!!! - GitHub Pages or itch.io
 Medium
 Rework font + colour
 Convert wav to ogg - FFMPEG
+Create Tutorial
 
 Low
 Create adaptable layout (Mobile vs Desktop)

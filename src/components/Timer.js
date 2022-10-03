@@ -25,7 +25,7 @@ export default class Timer extends Text {
                     this.value = maxValue;
                     switch (type) {
                         case 'fail':
-                            this.gameOver(app);
+                            this.gameOver(stage);
                             break;
                         default:
                             this.generateRequest(stage)
@@ -54,8 +54,7 @@ export default class Timer extends Text {
         }
     }
 
-    gameOver(app) {
-        this.text = 'Game Over!'
-        app.stop();
+    gameOver(stage) {
+        stage.emit('gameover');
     }
 }
