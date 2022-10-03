@@ -22,7 +22,7 @@ jfxr
 High 
 Complete Replenish feature (From ""nurses"")
 - Add badges to icons to indicate how many items we have left
-Deploy!!!
+Deploy!!! - GitHub Pages or itch.io
 
 
 Medium
