@@ -15,6 +15,11 @@ export const iconTextures = iconFiles.map(icon => {
   return Texture.from(icon);
 });
 
+const requestFiles = ['request-call.png', 'request-medication.png', 'request-feedback.png', 'request-shower.png']
+
+export const requestTextures = requestFiles.map(request => {
+  return Texture.from(request);
+});
 
 const app = new Application({ backgroundAlpha: 0, width: window.innerWidth, height: window.innerHeight - 10 });
 document.body.appendChild(app.view);
@@ -93,11 +98,7 @@ const game = () => {
 
   app.stage.addChild(player);
 
-  const requestFiles = ['request-call.png', 'request-medication.png', 'request-feedback.png', 'request-shower.png']
 
-  const requestTextures = requestFiles.map(request => {
-    return Texture.from(request);
-  });
 
   const beds = [];
   const icons = [];
@@ -132,6 +133,7 @@ const game = () => {
     if (requests[bedId]) {
       return;
     }
+
     beds[bedId].request = requestId;
     const request = new BedRequest(x + 40, y, requestTextures[requestId], bedId);
     requests[bedId] = request;
@@ -160,6 +162,12 @@ const game = () => {
     const { nurse } = e;
     nurses = nurses.filter(curNurse => !curNurse.destroyed);
     app.stage.removeChild(nurse);
+  });
+
+  app.stage.on('replenish', (e) => {
+    const { requestId } = e;
+    player.options[requestId] += 5;
+    console.log(player.options);
   })
 
   app.stage.on('requestComplete', (e) => {

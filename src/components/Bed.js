@@ -27,9 +27,12 @@ export default class Bed extends Sprite {
     }
 
     onPress() {
-        if (this.player.selectedItem === this.request) {
+        if (this.player.selectedItem === this.request && this.player.options[this.player.selectedItem] > 0) {
             sound.play('done');
+            this.player.options[this.player.selectedItem] -= 1;
+            console.log(this.player.options);
             this.request = 0;
+            
             this.stage.emit('requestComplete', { bedId: this.id});
         }
     }
