@@ -92,12 +92,10 @@ if (isMobile) {
   appHeight = window.innerHeight;
 }
 
-settings.RESOLUTION = 1;
-
 // Scale mode for all textures, will retain pixelation
-settings.SCALE_MODE = SCALE_MODES.NEAREST;
+// settings.SCALE_MODE = SCALE_MODES.NEAREST;
 
-const app = new Application({ backgroundAlpha: 0, width: appWidth, height: appHeight - 10 });
+const app = new Application({ backgroundAlpha: 0, width: appWidth, height: appHeight - 10, resolution: 1});
 document.body.appendChild(app.view);
 
 
